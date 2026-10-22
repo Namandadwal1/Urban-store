@@ -34,10 +34,13 @@ export default function Footer() {
           </nav>
         </div>
 
-        <div className="mt-8 border-t border-[#E9DFD4] pt-5 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} YOUR BRAND. All rights reserved.
-        </div>
+              <div className="mt-8 border-t border-[#E9DFD4] pt-6">
+        <p>
+          © 2026 YOUR BRAND. All rights reserved.
+        </p>
       </div>
+      </div>
+   
     </footer>
   );
 }
