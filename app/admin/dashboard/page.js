@@ -1,0 +1,32 @@
+import AdminSidebar from "@/app/components/admin/AdminSidebar";
+import Header from "@/app/components/admin/Dashboard/header";
+import Quick from "@/app/components/admin/Dashboard/Quick";
+import RecentOrder from "@/app/components/admin/Dashboard/recentorder";
+import Sales from "@/app/components/admin/Dashboard/sales";
+import Stats from "@/app/components/admin/Dashboard/stats";
+import TopProducts from "@/app/components/admin/Dashboard/topProducts";
+
+export default function AdminDashboard() {
+  return (
+    <div className="min-h-screen bg-[#FAF7F2] text-[#29231F]">
+      {/* Fixed Sidebar */}
+      <AdminSidebar />
+
+      {/* Dashboard Content */}
+      <main className="ml-64 min-w-0 p-4 sm:p-6 lg:p-8">
+        <div className="mx-auto max-w-[1600px] space-y-7">
+          <Header />
+          <Stats />
+          <Sales />
+
+          <div className="grid min-w-0 grid-cols-1 items-start gap-6 xl:grid-cols-[1.6fr_1fr]">
+            <RecentOrder />
+            <TopProducts />
+          </div>
+
+          <Quick />
+        </div>
+      </main>
+    </div>
+  );
+}
