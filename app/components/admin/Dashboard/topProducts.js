@@ -1,9 +1,9 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowUpRight, Tag } from "lucide-react";
-import { createClient } from "@/lib///supabase/client";
+import Link from "next/link";
+import { ArrowUpRight, Tag, Trophy } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 export default function TopProducts() {
   const [product, setProduct] = useState(null);
@@ -25,13 +25,13 @@ export default function TopProducts() {
         return;
       }
 
-      const cancelled = orders.data
+      const cancelled = (orders.data || [])
         .filter((o) => ["cancelled", "canceled"].includes(o.status?.toLowerCase()))
         .map((o) => o.id);
 
       const sales = {};
 
-      items.data
+      (items.data || [])
         .filter((item) => !cancelled.includes(item.order_id))
         .forEach((item) => {
           const id = item.product_id;
@@ -64,54 +64,88 @@ export default function TopProducts() {
   }, []);
 
   return (
-    <section className="rounded-2xl border border-[#E9DFD4] bg-[#F1EAE1] p-5">
-      <p className="text-sm font-medium text-[#A56A43]">CUSTOMER FAVORITE</p>
-      <h2 className="mt-1 text-lg font-bold text-[#29231F]">
-        Best-Selling Product
-      </h2>
+    <section className="rounded-2xl border border-[#E9DFD4] bg-white/80 backdrop-blur-md p-4 sm:p-6 shadow-sm flex flex-col justify-between">
+      <div>
+        {/* Top Badge */}
+        <div className="flex items-center justify-between">
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider bg-[#D9F99D] text-[#29231F] px-2.5 py-0.5 rounded-full border border-[#d1f58b] shadow-sm">
+            <Trophy size={12} /> Customer Favorite
+          </span>
+          <span className="text-[11px] font-medium text-neutral-400">Best Seller</span>
+        </div>
 
-      <div className="mt-5 rounded-2xl bg-white p-5 text-center">
-        {loading ? (
-          <p>Loading product...</p>
-        ) : error ? (
-          <p className="text-sm text-red-600">{error}</p>
-        ) : !product ? (
-          <p className="py-10 text-sm text-gray-500">
-            No sales data available yet.
-          </p>
-        ) : (
-          <>
-            {product.image_url ? (
-              <img
-                src={product.image_url}
-                alt={product.name}
-                className="h-44 w-full rounded-xl bg-[#FAF7F2] object-contain"
-              />
-            ) : (
-              <Tag size={48} className="mx-auto my-12 text-[#A56A43]" />
-            )}
+        <h2 className="mt-2 text-base sm:text-lg font-bold text-[#29231F]">
+          Top Performing Product
+        </h2>
 
-            <h3 className="mt-4 font-semibold">{product.name}</h3>
-
-            <div className="mt-5 grid grid-cols-2 gap-3">
-              <div className="rounded-xl bg-[#FAF7F2] p-3">
-                <p className="text-xs text-gray-500">Units Sold</p>
-                <p className="mt-1 text-lg font-bold">{product.units}</p>
-              </div>
-              <div className="rounded-xl bg-[#FAF7F2] p-3">
-                <p className="text-xs text-gray-500">Price</p>
-                <p className="mt-1 text-lg font-bold">
-                  ₹{Number(product.price).toLocaleString("en-IN")}
-                </p>
-              </div>
+        {/* Product Showcase Card */}
+        <div className="mt-4 rounded-2xl border border-[#E9DFD4] bg-[#FAF7F2] p-4 text-center shadow-inner">
+          {loading ? (
+            <div className="py-12 text-xs text-neutral-500 flex items-center justify-center gap-2">
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#29231F] border-t-transparent" />
+              Loading best-seller...
             </div>
-          </>
-        )}
+          ) : error ? (
+            <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-xs text-red-600">
+              {error}
+            </div>
+          ) : !product ? (
+            <div className="py-10 text-center text-xs text-neutral-400">
+              <Tag size={32} className="mx-auto mb-2 text-neutral-300" />
+              No sales data available yet.
+            </div>
+          ) : (
+            <>
+              {/* Product Image */}
+              <div className="relative h-40 sm:h-44 w-full rounded-xl bg-white border border-[#E9DFD4] overflow-hidden mb-4 shadow-sm">
+                {product.image_url ? (
+                  <img
+                    src={product.image_url}
+                    alt={product.name}
+                    className="h-full w-full object-cover object-center transition-transform duration-500 hover:scale-105"
+                  />
+                ) : (
+                  <div className="h-full w-full flex items-center justify-center text-neutral-400">
+                    <Tag size={36} />
+                  </div>
+                )}
+              </div>
+
+              <h3 className="font-bold text-sm sm:text-base text-[#29231F] line-clamp-1">
+                {product.name}
+              </h3>
+
+              {/* Stats Breakdown */}
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <div className="rounded-xl bg-white p-3 border border-[#E9DFD4] shadow-sm">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                    Units Sold
+                  </p>
+                  <p className="mt-1 text-base sm:text-lg font-bold text-[#29231F]">
+                    {product.units}
+                  </p>
+                </div>
+                <div className="rounded-xl bg-white p-3 border border-[#E9DFD4] shadow-sm">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                    Price
+                  </p>
+                  <p className="mt-1 text-base sm:text-lg font-bold text-[#29231F]">
+                    ₹{Number(product.price || 0).toLocaleString("en-IN")}
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
-      <a href="/admin/products" className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-[#29231F] px-4 py-3 text-sm text-white hover:bg-[#A56A43]">
+      {/* Manage Products Link */}
+      <Link
+        href="/admin/products"
+        className="mt-5 flex items-center justify-center gap-2 rounded-xl bg-[#29231F] px-4 py-3 text-xs sm:text-sm font-bold text-white transition-all hover:bg-neutral-800 active:scale-95 shadow-sm"
+      >
         Manage Products <ArrowUpRight size={16} />
-      </a>
+      </Link>
     </section>
   );
 }

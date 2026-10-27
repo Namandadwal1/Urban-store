@@ -23,27 +23,28 @@ function AdminSidebar() {
   ];
 
   return (
-    <aside className="fixed left-0 top-0 z-20 flex h-screen w-64 flex-col border-r border-[#E9DFD4] bg-[#FAF7F2] px-5 py-7">
-      {/* Logo */}
-      <Link href="/admin" className="mb-10 flex items-center gap-3 px-2">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#A56A43]">
-          <Store size={22} />
+    <aside className="fixed left-0 top-0 z-30 flex h-screen w-16 md:w-64 flex-col border-r border-[#E9DFD4] bg-[#FAF7F2] px-2.5 md:px-5 py-6 md:py-7 transition-all duration-300">
+      
+      {/* Brand Logo Header */}
+      <Link href="/admin" className="mb-8 flex items-center justify-center md:justify-start gap-3 px-1 md:px-2">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#D9F99D] text-[#29231F] shadow-sm">
+          <Store size={20} />
         </div>
 
-        <div>
-          <h1 className="text-lg font-bold tracking-wide text-[#29231F]">
+        <div className="hidden md:block overflow-hidden">
+          <h1 className="text-base font-bold tracking-tight text-[#29231F] whitespace-nowrap">
             UrbanWear
           </h1>
-          <p className="text-xs text-gray-500">Admin Panel</p>
+          <p className="text-[11px] font-medium text-gray-500">Admin Panel</p>
         </div>
       </Link>
 
-      {/* Navigation */}
-      <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-widest text-gray-400">
+      {/* Main Navigation */}
+      <p className="mb-3 hidden md:block px-3 text-[10px] font-bold uppercase tracking-widest text-gray-400">
         Main Menu
       </p>
 
-      <nav className="flex flex-col gap-2">
+      <nav className="flex flex-col gap-1.5">
         {menuItems.map((item) => {
           const Icon = item.icon;
 
@@ -56,33 +57,36 @@ function AdminSidebar() {
             <Link
               key={item.name}
               href={item.path}
-              className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors duration-200 ${
+              title={item.name} // Native browser tooltip when icon-only
+              className={`flex items-center justify-center md:justify-start gap-3 rounded-2xl px-3 md:px-4 py-3 text-sm font-bold transition-all duration-200 ${
                 isActive
-                  ? "bg-[#EFE7DE] text-[#A56A43]"
-                  : "text-[#29231F] hover:bg-[#F0EBE5]"
+                  ? "bg-[#D9F99D] text-[#29231F] shadow-sm"
+                  : "text-[#29231F]/80 hover:bg-[#F0EBE5] hover:text-[#29231F]"
               }`}
             >
-              <Icon size={19} strokeWidth={1.8} />
-              <span>{item.name}</span>
+              <Icon size={20} strokeWidth={isActive ? 2.2 : 1.8} className="shrink-0" />
+              <span className="hidden md:inline whitespace-nowrap">{item.name}</span>
             </Link>
           );
         })}
       </nav>
 
-      {/* Bottom Section */}
-      <div className="mt-auto border-t border-[#E9DFD4] pt-5">
+      {/* Bottom Store Switcher */}
+      <div className="mt-auto border-t border-[#E9DFD4] pt-4">
         <Link
           href="/"
-          className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-gray-600 transition hover:bg-[#F0EBE5] hover:text-[#29231F]"
+          title="View Store"
+          className="flex items-center justify-center md:justify-start gap-3 rounded-2xl px-3 md:px-4 py-3 text-sm font-semibold text-gray-600 transition hover:bg-[#F0EBE5] hover:text-[#29231F]"
         >
-          <Store size={19} strokeWidth={1.8} />
-          View Store
+          <Store size={20} strokeWidth={1.8} className="shrink-0" />
+          <span className="hidden md:inline whitespace-nowrap">View Store</span>
         </Link>
 
-        <p className="mt-4 px-4 text-xs text-gray-400">
+        <p className="mt-3 hidden md:block px-4 text-[10px] font-medium text-gray-400">
           Store Management
         </p>
       </div>
+
     </aside>
   );
 }

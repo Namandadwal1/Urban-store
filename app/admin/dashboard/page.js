@@ -9,11 +9,15 @@ import TopProducts from "@/app/components/admin/Dashboard/topProducts";
 export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-[#FAF7F2] text-[#29231F]">
-      {/* Fixed Sidebar */}
+      {/* Fixed Sidebar (w-16 on mobile, w-64 on desktop) */}
       <AdminSidebar />
 
-      {/* Dashboard Content */}
-      <main className="ml-64 min-w-0 p-4 sm:p-6 lg:p-8">
+      {/* 
+        FIXED:
+        1. Changed `ml-64` to `ml-16 md:ml-64` to match the dynamic sidebar width.
+        2. Added `pb-28 md:pb-8` so content isn't covered by the mobile bottom bar.
+      */}
+      <main className="ml-16 md:ml-64 min-w-0 p-4 sm:p-6 lg:p-8 pb-28 md:pb-8 transition-all duration-300">
         <div className="mx-auto max-w-[1600px] space-y-7">
           <Header />
           <Stats />
